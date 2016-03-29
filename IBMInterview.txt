@@ -1,0 +1,869 @@
+1. Web services:
+
+a method of communication between two applications over WWW
+
+Two kinds:
+	Simple Object Access Protocol (SOAP)
+	Representational State Trasfer (REST)
+
+	SOAP:
+		defines a standard communication protocol specification for XML-based message exchange. Uses different transport protocols, HTTP and SMTP. HTTP makes it easier to tunnel across firewalls and proxies. SOAP can sometimes be slower than middleware technologies like CORBA or ICE due to XML format
+
+	REST:
+		describe a set of architectural principles by which data can be transmitted over a standardized interface (HTTP). REST does not contain an additional messaging layer and focuses on design rules for creating stateless services. A client can access the resource using the unique URI and a representation of the resource is returned. While accessing RESTful resources with HTTP protocol, the URL of the resource serves as the resource identifier and GET, PUT, DELETE, POST and HEAD are the operations to be performed on that resource.
+
+	REST vs. SOAP
+		REST: 
+			Stateless, good caching infrastructure over HTTP GET method, no standard set of rules to describe the REST Web services interface, mobile friendly, easy to integrate with existing websites
+
+		SOAP:
+			Web Services Description Language describes rules to define messages, bindings, operations and location of the Web service, is interface. Require less plumbing code than REST (transactions, security, coordination). JAX-WS are useful in handling asynchronous processing and invocation.
+
+		Complex -> SOAP
+		Simple (CRUD) -> REST
+
+
+2. URI:
+
+Uniform Resource Identifier is the way identify contents, whether is a page or an image. Web page address is Uniform Resource Locator (URL). Uniform Resource Name (URN) its exact location may change from time, but some agency will find it.
+
+
+3. RESTful Web Services Tutorial
+
+RESTful Web Services are REST architecture based web services. In REST Architecture everything is a resource. RESTful web services are light weight, highly scalable and maintainable and are very commonly used to create APIs for web based applications.
+
+REST is web standards based architecture and uses HTTP Protocol for data communication. It revolves around resource where every component is a resource and a resource is accessed by a common interface using HTTP standard methods. 
+
+In REST architecture, a REST Server simply provides access to resources and REST client accesses and presents the resources. Here each resource is identified by URIs/ global IDs. REST uses various representations to represent a resource like text, JSON and XML. Now a days JSON is the most popular format being used in web services.
+
+HTTP Methods:
+	GET - Provides a read only access to a resource.
+	PUT - Used to create a new resource.
+	DELETE - Used to remove a resource.
+	POST - Used to update a existing resource or create a new resource.
+	OPTIONS - Used to get the supported operations on a resource.
+
+RESTFul Web Services
+	A web service is a collection of open protocols and standards used for exchanging data between applications or systems. 
+
+	Web services based on REST Architecture are known as RESTful web services. These web services use HTTP methods to implement the concept of REST architecture. 
+
+4. Java
+
+1) Object stores state in fields, exposes its behavior through methods.
+Hiding internal state and requiring all interaction to be performed through an object's methods is called data encapsulation.
+Bundling code into individual software objects provides a number of benefits, including:
+	1. Modularity: The source code for an object can be written and maintained independently of the source code for other objects. Once created, an object can be easily passed around inside the system.
+
+	2. Information-hiding: By interacting only with an object's methods, the details of its internal implementation remain hidden from the outside world.
+
+	3. Code re-use: If an object already exists, you can use that object in your program. 
+
+	4. Pluggability and debugging ease: If a particular object turns out to be problematic, you can simply remove it from your application and plug in a different object as its replacement. 
+
+2) Object-oriented programming allows classes to inherit commonly used state and behavior from other classes. In the Java programming language, each class is allowed to have one direct superclass, and each superclass has the potential for an unlimited number of subclasses.
+
+3) Methods form the object's interface with the outside world; Implementing an interface allows a class to become more formal about the behavior it promises to provide. Interfaces form a contract between the class and the outside world, and this contract is enforced at build time by the compiler. If your class claims to implement an interface, all methods defined by that interface must appear in its source code before the class will successfully compile.
+
+4) A package is a namespace that organizes a set of related classes and interfaces. The Java platform provides an enormous class library (a set of packages) suitable for use in your own applications. This library is known as the "Application Programming Interface", or "API" for short. Its packages represent the tasks most commonly associated with general-purpose programming.
+
+5) Java programming language defines the following kinds of variables:
+		- Instance Variables (Non-Static Fields): Non-static fields are also known as instance variables because their values are unique to each instance of a class.
+		- Class Variables (Static Fields): A class variable is any field declared with the static modifier; this tells the compiler that there is exactly one copy of this variable in existence, regardless of how many times the class has been instantiated.
+		- Local Variables: must be an assigned value by the code, and scope only between the opening and closing braces of a method.
+		- Parameters: parameters are always classified as "variables" not "fields". 
+
+6) Naming: 
+	If the name you choose consists of only one word, spell that word in all lowercase letters. If it consists of more than one word, capitalize the first letter of each subsequent word. The names gearRatio and currentGear are prime examples of this convention. If your variable stores a constant value, such as static final int NUM_GEARS = 6, the convention changes slightly, capitalizing every letter and separating subsequent words with the underscore character. 
+
+7) Primitive Data Types:
+	Java programming language is statically-typed, which means that all variables must first be declared before they can be used. A variable's data type determines the values it may contain, plus the operations that may be performed on it.
+		
+	-byte:  8-bit signed two's complement integer. It has a minimum value of -128 and a maximum value of 127 (inclusive).
+	
+	-short: 16-bit signed two's complement integer. It has a minimum value of -32,768 and a maximum value of 32,767 (inclusive). 
+
+	-int:  32-bit signed two's complement integer, which has a minimum value of -2^31 and a maximum value of 2^31-1.
+
+	-long: 64-bit two's complement integer. The signed long has a minimum value of -2^63 and a maximum value of 2^63-1.
+
+	-float: single-precision 32-bit
+
+	-double: double-precision 64-bit
+
+	-boolean: tru and false, one bit
+
+	-char: single 16-bit Unicode character, It has a minimum value of '\u0000' (or 0) and a maximum value of '\uffff' (or 65,535 inclusive).
+
+	-String: Enclosing your character string within double quotes will automatically create a new String object; for example, String s = "this is a string";. String objects are immutable, which means that once created, their values cannot be changed. The String class is not technically a primitive data type.
+
+8) Literals:
+	The new keyword isn't used when initializing a variable of a primitive type. Primitive types are special data types built into the language; they are not objects created from a class. A literal is the source code representation of a fixed value; literals are represented directly in your code without requiring computation.
+
+	An integer literal is of type long if it ends with the letter L.
+
+	Decimal: Base 10, whose digits consists of the numbers 0 through 9
+	Hexadecimal: Base 16, wnumbers 0 through 9 and the letters A through F
+	Binary: Base 2, whose digits consists of the numbers 0 and 1
+
+	A floating-point literal is of type float if it ends with the letter F or f; otherwise its type is double and it can optionally end with the letter D or d.
+
+	There's also a special null literal that can be used as a value for any reference type. null may be assigned to any variable, except variables of primitive types. There's little you can do with a null value beyond testing for its presence. Therefore, null is often used in programs as a marker to indicate that some object is unavailable.
+
+	Any number of underscore characters (_) can appear anywhere between digits in a numerical literal. This feature enables you, for example. to separate groups of digits in numeric literals, which can improve the readability of your code. Cannot put (_) At the beginning or end of a number, adjacent to a decimal point in a floating point literal, prior to an F or L suffix, in positions where a string of digits is expected.
+
+9) Array:
+	declares an array: int[] array;
+	allocate an array with memory: array = new int[10];
+
+	another way: int[] array = { 1, 2, 3, 4, 5 };
+
+	use the built-in length property to determine the size of any array:
+		array.length;
+
+	copy array: System.arraycopy(copyFrom, startPos, copyTo, destPos, length)
+			or: java.util.Arrays.copyOfRange(copyFrom, startPos, destPos)
+
+	Searching an array for a specific value to get the index at which it is placed (the binarySearch method).
+
+	Comparing two arrays to determine if they are equal or not (the equals method).
+
+	Filling an array to place a specific value at each index (the fill method).
+
+	Sorting an array into ascending order. 
+
+10) Operators:
+	All binary operators except for the assignment operators are evaluated from left to right; assignment operators are evaluated right to left.
+
+	postfix								expr++ expr--
+	unary								++expr --expr +expr -expr ~ !
+	multiplicative						* / %
+	additive							+ -
+	shift								<< >> >>>
+	relational							< > <= >= instanceof
+	equality							== !=
+	bitwise AND							&
+	bitwise exclusive OR				^
+	bitwise inclusive OR				|
+	logical AND							&&
+	logical OR							||
+	ternary								? :
+	assignment							= += -= *= /= %= &= ^= |= <<= >>= >>>=
+
+	In a for loop, since each part of the for loop is its own statement, whether you use ++i, or i++ does not matter. The variable comparison is made as the next statement after the increment is done.
+
+	The && and || operators perform Conditional-AND and Conditional-OR operations on two boolean expressions. These operators exhibit "short-circuiting" behavior, which means that the second operand is evaluated only if needed.
+
+	The instanceof operator compares an object to a specified type. null is not an instance of anything.
+
+	Bitwise and Bit Shift Operators
+		-The unary bitwise complement operator "~" inverts a bit pattern.
+		-The signed left shift operator "<<" shifts a bit pattern to the left, and the signed right shift operator ">>" shifts a bit pattern to the right. 
+		-The unsigned right shift operator ">>>" shifts a zero into the leftmost position, while the leftmost position after ">>" depends on sign extension.
+		-The bitwise & operator performs a bitwise AND operation.
+		-The bitwise ^ operator performs a bitwise exclusive OR operation.
+		-The bitwise | operator performs a bitwise inclusive OR operation.
+
+11) Expressions, Statements, Blocks
+ Operators may be used in building expressions, which compute values; expressions are the core components of statements; statements may be grouped into blocks.
+
+ Expression statements; Declaration statements, Control flow statements
+
+ In Java SE 7 and later, you can use a String object in the switch statement's expression.
+
+ The for statement also has another form designed for iteration through Collections and arrays This form is sometimes referred to as the enhanced for statement, and can be used to make your loops more compact and easy to read. for (int item : numbers)
+
+ An unlabeled break statement terminates the innermost switch, for, while, or do-while statement, but a labeled break terminates an outer statement. A labeled continue statement skips the current iteration of an outer loop marked with the given label.
+
+
+12) Class declarations can include these components, in order:
+
+	1. Modifiers such as public, private, and a number of others that you will encounter later.
+	2. The class name, with the initial letter capitalized by convention.
+	3. The name of the class's parent (superclass), if any, preceded by the keyword extends. A class can only extend (subclass) one parent.
+	4. A comma-separated list of interfaces implemented by the class, if any, preceded by the keyword implements. A class can implement more than one interface.
+	5. The class body, surrounded by braces, {}.
+
+13) method declarations have six components, in order:
+
+	1. Modifiers—such as public, private, and others you will learn about later.
+	2. The return type—the data type of the value returned by the method, or void if the method does not return a value.
+	3. The method name—the rules for field names apply to method names as well, but the convention is a little different.
+	4. The parameter list in parenthesis—a comma-delimited list of input parameters, preceded by their data types, enclosed by parentheses, (). If there are no parameters, you must use empty parentheses.
+	5. An exception list—to be discussed later.
+	6. The method body, enclosed between braces—the method's code, including the declaration of local variables, goes here.
+
+14) Overloading Methods
+
+ Java can distinguish between methods with different method signatures. This means that methods within a class can have the same name if they have different parameter lists. The compiler does not consider return type when differentiating methods, so you cannot declare two methods with the same signature even if they have a different return type.
+
+ 15) Constructor
+ You don't have to provide any constructors for your class, but you must be careful when doing this. The compiler automatically provides a no-argument, default constructor for any class without constructors. This default constructor will call the no-argument constructor of the superclass. In this situation, the compiler will complain if the superclass doesn't have a no-argument constructor so you must verify that it does. If your class has no explicit superclass, then it has an implicit superclass of Object, which does have a no-argument constructor. 
+
+ When inheriting from another class, super() has to be called first in the constructor. If not, the compiler will insert that call. This is why super constructor is also invoked when a Sub object is created.
+
+16) Arbitrary Number of Arguments
+
+You can use a construct called varargs to pass an arbitrary number of values to a method. You use varargs when you don't know how many of a particular type of argument will be passed to the method. To use varargs, you follow the type of the last parameter by an ellipsis (three dots, ...), then a space, and the parameter name. The method can then be called with any number of that parameter, including none.
+
+You will most commonly see varargs with the printing methods; for example, this printf method:
+	public PrintStream printf(String format, Object... args)
+
+allows you to print an arbitrary number of objects. It can be called like this:
+	System.out.printf("%s: %d, %s%n", name, idnum, address);
+
+17) Passing Primitive Data Type Arguments/Passing Reference Data Type Arguments
+
+	Primitive arguments, such as an int or a double, are passed into methods by value. This means that any changes to the values of the parameters exist only within the scope of the method. When the method returns, the parameters are gone and any changes to them are lost. 
+
+	Reference data type parameters, such as objects, are also passed into methods by value. This means that when the method returns, the passed-in reference still references the same object as before. However, the values of the object's fields can be changed in the method, if they have the proper access level.
+
+18) Object:
+	Simply declaring a reference variable does not create an object. For that, you need to use the new operator, as described in the next section. You must assign an object to the reference variable before you use it in your code. Otherwise, you will get a compiler error.
+
+	The new operator instantiates a class by allocating memory for a new object and returning a reference to that memory. The new operator also invokes the object constructor. The new operator returns a reference to an object. So you could use the value returned from new to access a new object's fields:
+		int height = new Rectangle().height;
+
+19) Garbage Collector
+An object is eligible for garbage collection when there are no more references to that object. References that are held in a variable are usually dropped when the variable goes out of scope. Or, you can explicitly drop an object reference by setting the variable to the special value null. Remember that a program can have multiple references to the same object; all references to an object must be dropped before the object is eligible for garbage collection.
+
+20) Returning Class or Interface
+
+When a method uses a class name as its return type, such as whosFastest does, the class of the type of the returned object must be either a subclass of, or the exact class of, the return type. Suppose that you have a class hierarchy in which ImaginaryNumber is a subclass of java.lang.Number, which is in turn a subclass of Object, as illustrated in the following figure.
+
+	public Number returnANumber() {
+	    ...
+	}
+The returnANumber method can return an ImaginaryNumber but not an Object. ImaginaryNumber is a Number because it's a subclass of Number. 
+
+You also can use interface names as return types. In this case, the object returned must implement the specified interface.
+
+21) Using this with a Constructor
+
+From within a constructor, you can also use the this keyword to call another constructor in the same class. Doing so is called an explicit constructor invocation.
+	
+	public class Rectangle {
+	    private int x, y;
+	    private int width, height;
+	        
+	    public Rectangle() {
+	        this(0, 0, 1, 1);
+	    }
+	    public Rectangle(int width, int height) {
+	        this(0, 0, width, height);
+	    }
+	    public Rectangle(int x, int y, int width, int height) {
+	        this.x = x;
+	        this.y = y;
+	        this.width = width;
+	        this.height = height;
+	    }
+	} 
+
+Each constructor initializes some or all of the rectangle's member variables. The constructors provide a default value for any member variable whose initial value is not provided by an argument. For example, the no-argument constructor creates a 1x1 Rectangle at coordinates 0,0. The two-argument constructor calls the four-argument constructor, passing in the width and height but always using the 0,0 coordinates. 
+
+22) Access Control
+
+A class may be declared with the modifier public, in which case that class is visible to all classes everywhere. If a class has no modifier (the default, also known as package-private), it is visible only within its own package (packages are named groups of related classes — you will learn about them in a later lesson.)
+
+At the member level, you can also use the public modifier or no modifier (package-private) just as with top-level classes, and with the same meaning. For members, there are two additional access modifiers: private and protected. The private modifier specifies that the member can only be accessed in its own class. The protected modifier specifies that the member can only be accessed within its own package (as with package-private) and, in addition, by a subclass of its class in another package. No modifier, subclass cannot use.
+
+Use the most restrictive access level that makes sense for a particular member. Use private unless you have a good reason not to.
+
+Avoid public fields except for constants. Public fields tend to link you to a particular implementation and limit your flexibility in changing your code.
+
+23) Static
+1. Instance methods can access instance variables and instance methods directly.
+2. Instance methods can access class variables and class methods directly.
+3. Class methods can access class variables and class methods directly.
+4. Class methods cannot access instance variables or instance methods directly—they must use an object reference. Also, class methods cannot use the this keyword as there is no instance for this to refer to.
+
+A Static Method can access Static Data because they both exist independently of specific instances of a class.
+
+24) static initialization blocks
+
+A static initialization block is a normal block of code enclosed in braces, { }, and preceded by the static keyword. Here is an example:
+
+	static {
+	    // whatever code is needed for initialization goes here
+	}
+
+There is an alternative to static blocks — you can write a private static method:
+
+	class Whatever {
+	    public static varType myVar = initializeClassVariable();
+	        
+	    private static varType initializeClassVariable() {
+
+	        // initialization code goes here
+	    }
+	}
+The advantage of private static methods is that they can be reused later if you need to reinitialize the class variable.
+
+
+The non-static block gets called every time an instance of the class is constructed. The static block only gets called once, when the class itself is initialized, no matter how many objects of that type you create.
+	
+	public class Test {
+
+	    static{
+	        System.out.println("Static");
+	    }
+
+	    {
+	        System.out.println("Non-static block");
+	    }
+
+	    public static void main(String[] args) {
+	        Test t = new Test();
+	        Test t2 = new Test();
+	    }
+	}
+
+	print: 	Static
+			Non-static block
+			Non-static block
+
+A final method cannot be overridden in a subclass. Using a final method for initializing an instance variable:
+	
+	class Whatever {
+	    private varType myVar = initializeInstanceVariable();
+	        
+	    protected final varType initializeInstanceVariable() {
+
+	        // initialization code goes here
+	    }
+	}
+This is especially useful if subclasses might want to reuse the initialization method. The method is final because calling non-final methods during instance initialization can cause problems.
+
+25) Nested Classes
+Nested classes are divided into two categories: static and non-static. Nested classes that are declared static are called static nested classes. Non-static nested classes are called inner classes.
+	
+	class OuterClass {
+	    ...
+	    static class StaticNestedClass {
+	        ...
+	    }
+	    class InnerClass {
+	        ...
+	    }
+	}
+ Non-static nested classes (inner classes) have access to other members of the enclosing class, even if they are declared private. Static nested classes do not have access to other members of the enclosing class.
+
+ Compelling reasons for using nested classes include the following:
+
+	It is a way of logically grouping classes that are only used in one place: If a class is useful to only one other class, then it is logical to embed it in that class and keep the two together. Nesting such "helper classes" makes their package more streamlined.
+
+	It increases encapsulation: Consider two top-level classes, A and B, where B needs access to members of A that would otherwise be declared private. By hiding class B within class A, A's members can be declared private and B can access them. In addition, B itself can be hidden from the outside world.
+
+	It can lead to more readable and maintainable code: Nesting small classes within top-level classes places the code closer to where it is used.
+
+As with class methods and variables, a static nested class is associated with its outer class. And like static class methods, a static nested class cannot refer directly to instance variables or methods defined in its enclosing class: it can use them only through an object reference.
+	
+	Static nested classes are accessed using the enclosing class name:
+
+		OuterClass.StaticNestedClass
+
+		OuterClass.StaticNestedClass nestedObject = new OuterClass.StaticNestedClass();
+
+	To instantiate an inner class, you must first instantiate the outer class. Then, create the inner object within the outer object with this syntax:
+
+		OuterClass.InnerClass innerObject = outerObject.new InnerClass();
+
+Shadowing: If a declaration of a type (such as a member variable or a parameter name) in a particular scope (such as an inner class or a method definition) has the same name as another declaration in the enclosing scope, then the declaration shadows the declaration of the enclosing scope. You cannot refer to a shadowed declaration by its name alone. 
+	
+	public class ShadowTest {
+
+	    public int x = 0;
+
+	    class FirstLevel {
+
+	        public int x = 1;
+
+	        void methodInFirstLevel(int x) {
+	            System.out.println("x = " + x);
+	            System.out.println("this.x = " + this.x);
+	            System.out.println("ShadowTest.this.x = " + ShadowTest.this.x);
+	        }
+	    }
+
+	    public static void main(String... args) {
+	        ShadowTest st = new ShadowTest();
+	        ShadowTest.FirstLevel fl = st.new FirstLevel();
+	        fl.methodInFirstLevel(23);
+	    }
+	}
+	The following is the output of this example:
+
+	x = 23
+	this.x = 1
+	ShadowTest.this.x = 0
+
+This example defines three variables named x: the member variable of the class ShadowTest, the member variable of the inner class FirstLevel, and the parameter in the method methodInFirstLevel. The variable x defined as a parameter of the method methodInFirstLevel shadows the variable of the inner class FirstLevel. Consequently, when you use the variable x in the method methodInFirstLevel, it refers to the method parameter. To refer to the member variable of the inner class FirstLevel, use the keyword this to represent the enclosing scope:
+
+	System.out.println("this.x = " + this.x);
+
+Refer to member variables that enclose larger scopes by the class name to which they belong. For example, the following statement accesses the member variable of the class ShadowTest from the method methodInFirstLevel:
+
+	System.out.println("ShadowTest.this.x = " + ShadowTest.this.x);
+
+26) Local Classes
+Local classes are classes that are defined in a block, which is a group of zero or more statements between balanced braces. You typically find local classes defined in the body of a method.
+
+A local class has access to the members of its enclosing class. In addition, a local class has access to local variables. However, a local class can access local variables and parameters of the enclosing block that are final or effectively final. A variable or parameter whose value is never changed after it is initialized is effectively final. Declare the local class in a method, it can access the method's parameters. 
+
+Local classes are similar to inner classes because they cannot define or declare any static members. Local classes in static methods, such as the class PhoneNumber, which is defined in the static method validatePhoneNumber, can only refer to static members of the enclosing class.
+
+You cannot declare an interface inside a block; interfaces are inherently static. For example, the following code excerpt does not compile because the interface HelloThere is defined inside the body of the method greetInEnglish:
+
+    public void greetInEnglish() {
+        interface HelloThere {
+           public void greet();
+        }
+        class EnglishHelloThere implements HelloThere {
+            public void greet() {
+                System.out.println("Hello " + name);
+            }
+        }
+        HelloThere myGreeting = new EnglishHelloThere();
+        myGreeting.greet();
+    }
+
+You cannot declare static initializers or member interfaces in a local class. The following code excerpt does not compile because the method EnglishGoodbye.sayGoodbye is declared static. The compiler generates an error similar to "modifier 'static' is only allowed in constant variable declaration" when it encounters this method definition:
+
+    public void sayGoodbyeInEnglish() {
+        class EnglishGoodbye {
+            public static void sayGoodbye() {
+                System.out.println("Bye bye");
+            }
+        }
+        EnglishGoodbye.sayGoodbye();
+    }
+
+A local class can have static members provided that they are constant variables. The following code excerpt compiles because the static member EnglishGoodbye.farewell is a constant variable:
+
+    public void sayGoodbyeInEnglish() {
+        class EnglishGoodbye {
+            public static final String farewell = "Bye bye";
+            public void sayGoodbye() {
+                System.out.println(farewell);
+            }
+        }
+        EnglishGoodbye myEnglishGoodbye = new EnglishGoodbye();
+        myEnglishGoodbye.sayGoodbye();
+    }
+
+Inner class vs. local class:
+	
+	public class MethodLocalVSInner {
+	    public static void main(String[] args) {
+	        new MethodLocalVSInner().go();
+	    }
+
+	    void go() {
+	        new A().m();
+	        class A {
+	            void m() {
+	                System.out.println("inner");
+	            }
+	        }
+	    }
+
+	    class A {
+	        void m() {
+	            System.out.println("middle");
+	        }
+	    }
+	}
+	print: middle, because local class not in the scope yet
+
+	public class MethodLocalVSInner {
+	    public static void main(String[] args) {
+	        new MethodLocalVSInner().go();
+	    }
+		void go() {
+		    class A {
+		        void m() {
+		            System.out.println("inner");
+		        }
+		    }
+		    new A().m();
+		}
+		class A {
+	        void m() {
+	            System.out.println("middle");
+	        }
+	    }
+	}
+	print: inner, because local class now in the scope
+
+27) Anonymouse Classes
+Anonymous classes enable you to make your code more concise. They enable you to declare and instantiate a class at the same time. They are like local classes except that they do not have a name. Use them if you need to use a local class only once.
+
+	public class HelloWorldAnonymousClasses {
+	  
+	    interface HelloWorld {
+	        public void greet();
+	        public void greetSomeone(String someone);
+	    }
+	  
+	    public void sayHello() {
+	        
+	        class EnglishGreeting implements HelloWorld {
+	            String name = "world";
+	            public void greet() {
+	                greetSomeone("world");
+	            }
+	            public void greetSomeone(String someone) {
+	                name = someone;
+	                System.out.println("Hello " + name);
+	            }
+	        }
+	      
+	        HelloWorld englishGreeting = new EnglishGreeting();
+	        
+	        HelloWorld frenchGreeting = new HelloWorld() {
+	            String name = "tout le monde";
+	            public void greet() {
+	                greetSomeone("tout le monde");
+	            }
+	            public void greetSomeone(String someone) {
+	                name = someone;
+	                System.out.println("Salut " + name);
+	            }
+	        };
+	        
+	        englishGreeting.greet();
+	        frenchGreeting.greetSomeone("Fred");
+	    }
+
+	    public static void main(String... args) {
+	        HelloWorldAnonymousClasses myApp =
+	            new HelloWorldAnonymousClasses();
+	        myApp.sayHello();
+	    }            
+	}
+
+Like local classes, anonymous classes can capture variables; they have the same access to local variables of the enclosing scope:
+
+	An anonymous class has access to the members of its enclosing class.
+
+	An anonymous class cannot access local variables in its enclosing scope that are not declared as final or effectively final.
+
+	Like a nested class, a declaration of a type (such as a variable) in an anonymous class shadows any other declarations in the enclosing scope that have the same name.
+
+Anonymous classes also have the same restrictions as local classes with respect to their members:
+
+	You cannot declare static initializers or member interfaces in an anonymous class.
+
+	An anonymous class can have static members provided that they are constant variables.
+
+you cannot declare constructors in an anonymous class.
+
+28) Lambda Expression:
+One issue with anonymous classes is that if the implementation of your anonymous class is very simple, such as an interface that contains only one method, then the syntax of anonymous classes may seem unwieldy and unclear. In these cases, you're usually trying to pass functionality as an argument to another method, such as what action should be taken when someone clicks a button. Lambda expressions enable you to do this, to treat functionality as method argument, or code as data.
+
+	public static void processPersonsWithFunction(
+	    List<Person> roster,
+	    Predicate<Person> tester,
+	    Function<Person, String> mapper,
+	    Consumer<String> block) {
+	    for (Person p : roster) {
+	        if (tester.test(p)) {
+	            String data = mapper.apply(p);
+	            block.accept(data);
+	        }
+	    }
+	}
+
+	processPersonsWithFunction(
+	    roster,
+	    p -> p.getGender() == Person.Sex.MALE
+	        && p.getAge() >= 18
+	        && p.getAge() <= 25,
+	    p -> p.getEmailAddress(),
+	    email -> System.out.println(email)
+	);
+
+Use Aggregate Operations That Accept Lambda Expressions as Parameters:
+	roster
+	    .stream()
+	    .filter(
+	        p -> p.getGender() == Person.Sex.MALE
+	            && p.getAge() >= 18
+	            && p.getAge() <= 25)
+	    .map(p -> p.getEmailAddress())
+	    .forEach(email -> System.out.println(email));
+
+Target Types and Method Arguments
+
+	public interface Runnable {
+	    void run();
+	}
+
+	public interface Callable<V> {
+	    V call();
+	}
+
+Suppose that you have overloaded the method invoke as follows:
+
+	void invoke(Runnable r) {
+	    r.run();
+	}
+
+	<T> T invoke(Callable<T> c) {
+	    return c.call();
+	}
+
+String s = invoke(() -> "done");
+The method invoke(Callable<T>) will be invoked because that method returns a value; the method invoke(Runnable) does not. In this case, the type of the lambda expression () -> "done" is Callable<T>.
+
+29) Method References:
+You use lambda expressions to create anonymous methods. Sometimes, however, a lambda expression does nothing but call an existing method. In those cases, it's often clearer to refer to the existing method by name. Method references enable you to do this; they are compact, easy-to-read lambda expressions for methods that already have a name.
+	
+	public class Person {
+
+	    public enum Sex {
+	        MALE, FEMALE
+	    }
+
+	    String name;
+	    LocalDate birthday;
+	    Sex gender;
+	    String emailAddress;
+
+	    public int getAge() {
+	        // ...
+	    }
+	    
+	    public Calendar getBirthday() {
+	        return birthday;
+	    }    
+
+	    public static int compareByAge(Person a, Person b) {
+	        return a.birthday.compareTo(b.birthday);
+	    }
+	}
+v1.0
+	Person[] rosterAsArray = roster.toArray(new Person[roster.size()]);
+
+	class PersonAgeComparator implements Comparator<Person> {
+	    public int compare(Person a, Person b) {
+	        return a.getBirthday().compareTo(b.getBirthday());
+	    }
+	}
+	        
+	Arrays.sort(rosterAsArray, new PersonAgeComparator());
+
+v2.0
+	Arrays.sort(rosterAsArray,
+	    (Person a, Person b) -> {
+	        return a.getBirthday().compareTo(b.getBirthday());
+	    }
+	);
+
+v3.0
+	Arrays.sort(rosterAsArray,
+	    (a, b) -> Person.compareByAge(a, b)
+	);
+
+v4.0
+	Arrays.sort(rosterAsArray, Person::compareByAge);
+
+The method reference Person::compareByAge is semantically the same as the lambda expression (a, b) -> Person.compareByAge(a, b). Each has the following characteristics:
+
+	Its formal parameter list is copied from Comparator<Person>.compare, which is (Person, Person).
+
+	Its body calls the method Person.compareByAge.
+
+Reference to a Constructor:
+
+	public static <T, SOURCE extends Collection<T>, DEST extends Collection<T>> DEST transferElements(SOURCE sourceCollection,Supplier<DEST> collectionFactory){
+	        
+	        DEST result = collectionFactory.get();
+	        for (T t : sourceCollection) {
+	            result.add(t);
+	        }
+	        return result;
+	}
+
+	The functional interface Supplier contains one method get that takes no arguments and returns an object. Consequently, you can invoke the method transferElements with a lambda expression as follows:
+
+		Set<Person> rosterSetLambda = transferElements(roster, () -> { return new HashSet<>(); });
+		
+	You can use a constructor reference in place of the lambda expression as follows:
+
+		Set<Person> rosterSet = transferElements(roster, HashSet::new);
+
+30) Annotations
+
+a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
+
+	Information for the compiler — Annotations can be used by the compiler to detect errors or suppress warnings.
+	
+	Compile-time and deployment-time processing — Software tools can process annotation information to generate code, XML files, and so forth.
+	
+	Runtime processing — Some annotations are available to be examined at runtime.
+
+The at sign character (@) indicates to the compiler that what follows is an annotation. In the following example, the annotation's name is Override:
+
+	@Override
+	void mySuperMethod() { ... }
+
+The annotation can include elements, which can be named or unnamed, and there are values for those elements:
+
+	@Author(
+	   name = "Benjamin Franklin",
+	   date = "3/27/2003"
+	)
+	class MyClass() { ... }
+
+or
+
+	@SuppressWarnings(value = "unchecked")
+	void myMethod() { ... }
+
+If there is just one element named value, then the name can be omitted, as in:
+
+	@SuppressWarnings("unchecked")
+	void myMethod() { ... }
+
+If the annotation has no elements, then the parentheses can be omitted, as shown in the previous @Override example.
+
+It is also possible to use multiple annotations on the same declaration:
+
+	@Author(name = "Jane Doe")
+	@EBook
+	class MyClass { ... }
+
+If the annotations have the same type, then this is called a repeating annotation:
+
+	@Author(name = "Jane Doe")
+	@Author(name = "John Smith")
+	class MyClass { ... }
+
+Annotations can be applied to declarations: declarations of classes, fields, methods, and other program elements. When used on a declaration, each annotation often appears, by convention, on its own line.
+
+As of the Java SE 8 release, annotations can also be applied to the use of types. Here are some examples:
+
+Class instance creation expression:
+    new @Interned MyObject();
+Type cast:
+    myString = (@NonNull String) str;
+implements clause:
+    class UnmodifiableList<T> implements @Readonly List<@Readonly T> { ... }
+Thrown exception declaration:
+    void monitorTemperature() throws @Critical TemperatureException { ... }
+
+Suppose that a software group traditionally starts the body of every class with comments providing important information:
+
+	public class Generation3List extends Generation2List {
+
+	   // Author: John Doe
+	   // Date: 3/17/2002
+	   // Current revision: 6
+	   // Last modified: 4/12/2004
+	   // By: Jane Doe
+	   // Reviewers: Alice, Bill, Cindy
+
+	   // class code goes here
+
+	}
+
+To add this same metadata with an annotation, you must first define the annotation type. The syntax for doing this is:
+
+	@interface ClassPreamble {
+	   String author();
+	   String date();
+	   int currentRevision() default 1;
+	   String lastModified() default "N/A";
+	   String lastModifiedBy() default "N/A";
+	   // Note use of array
+	   String[] reviewers();
+	}
+
+After the annotation type is defined, you can use annotations of that type, with the values filled in, like this:
+
+	@ClassPreamble (
+	   author = "John Doe",
+	   date = "3/17/2002",
+	   currentRevision = 6,
+	   lastModified = "4/12/2004",
+	   lastModifiedBy = "Jane Doe",
+	   // Note array notation
+	   reviewers = {"Alice", "Bob", "Cindy"}
+	)
+	public class Generation3List extends Generation2List {
+
+		// class code goes here
+
+	}
+
+To make the information in @ClassPreamble appear in Javadoc-generated documentation, you must annotate the @ClassPreamble definition with the @Documented annotation:
+	
+	// import this to use @Documented
+	import java.lang.annotation.*;
+
+	@Documented
+	@interface ClassPreamble {
+
+	   // Annotation element definitions
+	   
+	}
+
+Annotation Types Used by the Java Language:
+
+The predefined annotation types defined in java.lang are @Deprecated, @Override, and @SuppressWarnings.
+
+	@Deprecated annotation indicates that the marked element is deprecated and should no longer be used. 
+
+	@Override annotation informs the compiler that the element is meant to override an element declared in a superclass.
+
+	@SuppressWarnings annotation tells the compiler to suppress specific warnings that it would otherwise generate.
+		
+		Every compiler warning belongs to a category. The Java Language Specification lists two categories: deprecation and unchecked. The unchecked warning can occur when interfacing with legacy code written before the advent of generics. 
+			@SuppressWarnings({"unchecked", "deprecation"})
+
+Annotations That Apply to Other Annotations
+
+Annotations that apply to other annotations are called meta-annotations. There are several meta-annotation types defined in java.lang.annotation.
+	
+	@Retention annotation specifies how the marked annotation is stored:
+
+	@Documented annotation indicates that whenever the specified annotation is used those elements should be documented using the Javadoc tool. 
+
+	@Target annotation marks another annotation to restrict what kind of Java elements the annotation can be applied to.
+
+	@Inherited annotation indicates that the annotation type can be inherited from the super class.
+
+	@Repeatable annotation, introduced in Java SE 8, indicates that the marked annotation can be applied more than once to the same declaration or type use. 
+
+For example, you want to ensure that a particular variable in your program is never assigned to null; you want to avoid triggering a NullPointerException. You can write a custom plug-in to check for this. You would then modify your code to annotate that particular variable, indicating that it is never assigned to null. The variable declaration might look like this:
+
+@NonNull String str;
+When you compile the code, including the NonNull module at the command line, the compiler prints a warning if it detects a potential problem, allowing you to modify the code to avoid the error. After you correct the code to remove all warnings, this particular error will not occur when the program runs.
+
+Repeating Annotations:
+
+Now you want to set a timer to run a method, doPeriodicCleanup, on the last day of the month and on every Friday at 11:00 p.m. To set the timer to run, create an @Schedule annotation and apply it twice to the doPeriodicCleanup method. The first use specifies the last day of the month and the second specifies Friday at 11p.m., as shown in the following code example:
+
+	@Schedule(dayOfMonth="last")
+	@Schedule(dayOfWeek="Fri", hour="23")
+	public void doPeriodicCleanup() { ... }
+
+=> 
+	Step 1: Declare a Repeatable Annotation Type
+
+		import java.lang.annotation.Repeatable;
+
+		@Repeatable(Schedules.class)
+		public @interface Schedule {
+		  String dayOfMonth() default "first";
+		  String dayOfWeek() default "Mon";
+		  int hour() default 12;
+		}
+
+	Step 2: Declare the Containing Annotation Type
+
+		public @interface Schedules {
+		    Schedule[] value();
+		}
