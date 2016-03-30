@@ -696,557 +696,782 @@ Reference to a Constructor:
 
 30) Annotations
 
-a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
+	a form of metadata, provide data about a program that is not part of the program itself. Annotations have no direct effect on the operation of the code they annotate.
 
-	Information for the compiler — Annotations can be used by the compiler to detect errors or suppress warnings.
-	
-	Compile-time and deployment-time processing — Software tools can process annotation information to generate code, XML files, and so forth.
-	
-	Runtime processing — Some annotations are available to be examined at runtime.
-
-The at sign character (@) indicates to the compiler that what follows is an annotation. In the following example, the annotation's name is Override:
-
-	@Override
-	void mySuperMethod() { ... }
-
-The annotation can include elements, which can be named or unnamed, and there are values for those elements:
-
-	@Author(
-	   name = "Benjamin Franklin",
-	   date = "3/27/2003"
-	)
-	class MyClass() { ... }
-
-or
-
-	@SuppressWarnings(value = "unchecked")
-	void myMethod() { ... }
-
-If there is just one element named value, then the name can be omitted, as in:
-
-	@SuppressWarnings("unchecked")
-	void myMethod() { ... }
-
-If the annotation has no elements, then the parentheses can be omitted, as shown in the previous @Override example.
-
-It is also possible to use multiple annotations on the same declaration:
-
-	@Author(name = "Jane Doe")
-	@EBook
-	class MyClass { ... }
-
-If the annotations have the same type, then this is called a repeating annotation:
-
-	@Author(name = "Jane Doe")
-	@Author(name = "John Smith")
-	class MyClass { ... }
-
-Annotations can be applied to declarations: declarations of classes, fields, methods, and other program elements. When used on a declaration, each annotation often appears, by convention, on its own line.
-
-As of the Java SE 8 release, annotations can also be applied to the use of types. Here are some examples:
-
-Class instance creation expression:
-    new @Interned MyObject();
-Type cast:
-    myString = (@NonNull String) str;
-implements clause:
-    class UnmodifiableList<T> implements @Readonly List<@Readonly T> { ... }
-Thrown exception declaration:
-    void monitorTemperature() throws @Critical TemperatureException { ... }
-
-Suppose that a software group traditionally starts the body of every class with comments providing important information:
-
-	public class Generation3List extends Generation2List {
-
-	   // Author: John Doe
-	   // Date: 3/17/2002
-	   // Current revision: 6
-	   // Last modified: 4/12/2004
-	   // By: Jane Doe
-	   // Reviewers: Alice, Bill, Cindy
-
-	   // class code goes here
-
-	}
-
-To add this same metadata with an annotation, you must first define the annotation type. The syntax for doing this is:
-
-	@interface ClassPreamble {
-	   String author();
-	   String date();
-	   int currentRevision() default 1;
-	   String lastModified() default "N/A";
-	   String lastModifiedBy() default "N/A";
-	   // Note use of array
-	   String[] reviewers();
-	}
-
-After the annotation type is defined, you can use annotations of that type, with the values filled in, like this:
-
-	@ClassPreamble (
-	   author = "John Doe",
-	   date = "3/17/2002",
-	   currentRevision = 6,
-	   lastModified = "4/12/2004",
-	   lastModifiedBy = "Jane Doe",
-	   // Note array notation
-	   reviewers = {"Alice", "Bob", "Cindy"}
-	)
-	public class Generation3List extends Generation2List {
-
-		// class code goes here
-
-	}
-
-To make the information in @ClassPreamble appear in Javadoc-generated documentation, you must annotate the @ClassPreamble definition with the @Documented annotation:
-	
-	// import this to use @Documented
-	import java.lang.annotation.*;
-
-	@Documented
-	@interface ClassPreamble {
-
-	   // Annotation element definitions
-	   
-	}
-
-Annotation Types Used by the Java Language:
-
-The predefined annotation types defined in java.lang are @Deprecated, @Override, and @SuppressWarnings.
-
-	@Deprecated annotation indicates that the marked element is deprecated and should no longer be used. 
-
-	@Override annotation informs the compiler that the element is meant to override an element declared in a superclass.
-
-	@SuppressWarnings annotation tells the compiler to suppress specific warnings that it would otherwise generate.
+		Information for the compiler — Annotations can be used by the compiler to detect errors or suppress warnings.
 		
-		Every compiler warning belongs to a category. The Java Language Specification lists two categories: deprecation and unchecked. The unchecked warning can occur when interfacing with legacy code written before the advent of generics. 
-			@SuppressWarnings({"unchecked", "deprecation"})
+		Compile-time and deployment-time processing — Software tools can process annotation information to generate code, XML files, and so forth.
+		
+		Runtime processing — Some annotations are available to be examined at runtime.
 
-Annotations That Apply to Other Annotations
+	The at sign character (@) indicates to the compiler that what follows is an annotation. In the following example, the annotation's name is Override:
 
-Annotations that apply to other annotations are called meta-annotations. There are several meta-annotation types defined in java.lang.annotation.
-	
-	@Retention annotation specifies how the marked annotation is stored:
+		@Override
+		void mySuperMethod() { ... }
 
-	@Documented annotation indicates that whenever the specified annotation is used those elements should be documented using the Javadoc tool. 
+	The annotation can include elements, which can be named or unnamed, and there are values for those elements:
 
-	@Target annotation marks another annotation to restrict what kind of Java elements the annotation can be applied to.
+		@Author(
+		   name = "Benjamin Franklin",
+		   date = "3/27/2003"
+		)
+		class MyClass() { ... }
 
-	@Inherited annotation indicates that the annotation type can be inherited from the super class.
+	or
 
-	@Repeatable annotation, introduced in Java SE 8, indicates that the marked annotation can be applied more than once to the same declaration or type use. 
+		@SuppressWarnings(value = "unchecked")
+		void myMethod() { ... }
 
-For example, you want to ensure that a particular variable in your program is never assigned to null; you want to avoid triggering a NullPointerException. You can write a custom plug-in to check for this. You would then modify your code to annotate that particular variable, indicating that it is never assigned to null. The variable declaration might look like this:
+	If there is just one element named value, then the name can be omitted, as in:
 
-@NonNull String str;
-When you compile the code, including the NonNull module at the command line, the compiler prints a warning if it detects a potential problem, allowing you to modify the code to avoid the error. After you correct the code to remove all warnings, this particular error will not occur when the program runs.
+		@SuppressWarnings("unchecked")
+		void myMethod() { ... }
 
-Repeating Annotations:
+	If the annotation has no elements, then the parentheses can be omitted, as shown in the previous @Override example.
 
-Now you want to set a timer to run a method, doPeriodicCleanup, on the last day of the month and on every Friday at 11:00 p.m. To set the timer to run, create an @Schedule annotation and apply it twice to the doPeriodicCleanup method. The first use specifies the last day of the month and the second specifies Friday at 11p.m., as shown in the following code example:
+	It is also possible to use multiple annotations on the same declaration:
 
-	@Schedule(dayOfMonth="last")
-	@Schedule(dayOfWeek="Fri", hour="23")
-	public void doPeriodicCleanup() { ... }
+		@Author(name = "Jane Doe")
+		@EBook
+		class MyClass { ... }
 
-=> 
-	Step 1: Declare a Repeatable Annotation Type
+	If the annotations have the same type, then this is called a repeating annotation:
 
-		import java.lang.annotation.Repeatable;
+		@Author(name = "Jane Doe")
+		@Author(name = "John Smith")
+		class MyClass { ... }
 
-		@Repeatable(Schedules.class)
-		public @interface Schedule {
-		  String dayOfMonth() default "first";
-		  String dayOfWeek() default "Mon";
-		  int hour() default 12;
+	Annotations can be applied to declarations: declarations of classes, fields, methods, and other program elements. When used on a declaration, each annotation often appears, by convention, on its own line.
+
+	As of the Java SE 8 release, annotations can also be applied to the use of types. Here are some examples:
+
+	Class instance creation expression:
+	    new @Interned MyObject();
+	Type cast:
+	    myString = (@NonNull String) str;
+	implements clause:
+	    class UnmodifiableList<T> implements @Readonly List<@Readonly T> { ... }
+	Thrown exception declaration:
+	    void monitorTemperature() throws @Critical TemperatureException { ... }
+
+	Suppose that a software group traditionally starts the body of every class with comments providing important information:
+
+		public class Generation3List extends Generation2List {
+
+		   // Author: John Doe
+		   // Date: 3/17/2002
+		   // Current revision: 6
+		   // Last modified: 4/12/2004
+		   // By: Jane Doe
+		   // Reviewers: Alice, Bill, Cindy
+
+		   // class code goes here
+
 		}
 
-	Step 2: Declare the Containing Annotation Type
+	To add this same metadata with an annotation, you must first define the annotation type. The syntax for doing this is:
 
-		public @interface Schedules {
-		    Schedule[] value();
+		@interface ClassPreamble {
+		   String author();
+		   String date();
+		   int currentRevision() default 1;
+		   String lastModified() default "N/A";
+		   String lastModifiedBy() default "N/A";
+		   // Note use of array
+		   String[] reviewers();
 		}
+
+	After the annotation type is defined, you can use annotations of that type, with the values filled in, like this:
+
+		@ClassPreamble (
+		   author = "John Doe",
+		   date = "3/17/2002",
+		   currentRevision = 6,
+		   lastModified = "4/12/2004",
+		   lastModifiedBy = "Jane Doe",
+		   // Note array notation
+		   reviewers = {"Alice", "Bob", "Cindy"}
+		)
+		public class Generation3List extends Generation2List {
+
+			// class code goes here
+
+		}
+
+	To make the information in @ClassPreamble appear in Javadoc-generated documentation, you must annotate the @ClassPreamble definition with the @Documented annotation:
+		
+		// import this to use @Documented
+		import java.lang.annotation.*;
+
+		@Documented
+		@interface ClassPreamble {
+
+		   // Annotation element definitions
+		   
+		}
+
+	Annotation Types Used by the Java Language:
+
+	The predefined annotation types defined in java.lang are @Deprecated, @Override, and @SuppressWarnings.
+
+		@Deprecated annotation indicates that the marked element is deprecated and should no longer be used. 
+
+		@Override annotation informs the compiler that the element is meant to override an element declared in a superclass.
+
+		@SuppressWarnings annotation tells the compiler to suppress specific warnings that it would otherwise generate.
+			
+			Every compiler warning belongs to a category. The Java Language Specification lists two categories: deprecation and unchecked. The unchecked warning can occur when interfacing with legacy code written before the advent of generics. 
+				@SuppressWarnings({"unchecked", "deprecation"})
+
+	Annotations That Apply to Other Annotations
+
+	Annotations that apply to other annotations are called meta-annotations. There are several meta-annotation types defined in java.lang.annotation.
+		
+		@Retention annotation specifies how the marked annotation is stored:
+
+		@Documented annotation indicates that whenever the specified annotation is used those elements should be documented using the Javadoc tool. 
+
+		@Target annotation marks another annotation to restrict what kind of Java elements the annotation can be applied to.
+
+		@Inherited annotation indicates that the annotation type can be inherited from the super class.
+
+		@Repeatable annotation, introduced in Java SE 8, indicates that the marked annotation can be applied more than once to the same declaration or type use. 
+
+	For example, you want to ensure that a particular variable in your program is never assigned to null; you want to avoid triggering a NullPointerException. You can write a custom plug-in to check for this. You would then modify your code to annotate that particular variable, indicating that it is never assigned to null. The variable declaration might look like this:
+
+	@NonNull String str;
+	When you compile the code, including the NonNull module at the command line, the compiler prints a warning if it detects a potential problem, allowing you to modify the code to avoid the error. After you correct the code to remove all warnings, this particular error will not occur when the program runs.
+
+	Repeating Annotations:
+
+	Now you want to set a timer to run a method, doPeriodicCleanup, on the last day of the month and on every Friday at 11:00 p.m. To set the timer to run, create an @Schedule annotation and apply it twice to the doPeriodicCleanup method. The first use specifies the last day of the month and the second specifies Friday at 11p.m., as shown in the following code example:
+
+		@Schedule(dayOfMonth="last")
+		@Schedule(dayOfWeek="Fri", hour="23")
+		public void doPeriodicCleanup() { ... }
+
+	=> 
+		Step 1: Declare a Repeatable Annotation Type
+
+			import java.lang.annotation.Repeatable;
+
+			@Repeatable(Schedules.class)
+			public @interface Schedule {
+			  String dayOfMonth() default "first";
+			  String dayOfWeek() default "Mon";
+			  int hour() default 12;
+			}
+
+		Step 2: Declare the Containing Annotation Type
+
+			public @interface Schedules {
+			    Schedule[] value();
+			}
 
 
 31) Interfaces
 
-an interface is a reference type, similar to a class, that can contain only constants, method signatures, default methods, static methods, and nested types. Method bodies exist only for default methods and static methods. Interfaces cannot be instantiated—they can only be implemented by classes or extended by other interfaces.
+	an interface is a reference type, similar to a class, that can contain only constants, method signatures, default methods, static methods, and nested types. Method bodies exist only for default methods and static methods. Interfaces cannot be instantiated—they can only be implemented by classes or extended by other interfaces.
 
-Note that the method signatures have no braces and are terminated with a semicolon.
+	Note that the method signatures have no braces and are terminated with a semicolon.
 
-An interface declaration consists of modifiers, the keyword interface, the interface name, a comma-separated list of parent interfaces (if any), and the interface body.
+	An interface declaration consists of modifiers, the keyword interface, the interface name, a comma-separated list of parent interfaces (if any), and the interface body.
 
-	public interface GroupedInterface extends Interface1, Interface2, Interface3 {
+		public interface GroupedInterface extends Interface1, Interface2, Interface3 {
 
-	    // constant declarations
-	    
-	    // base of natural logarithms
-	    double E = 2.718282;
-	 
-	    // method signatures
-	    void doSomething (int i, double x);
-	    int doSomethingElse(String s);
-	}
-
-An interface can extend other interfaces, just as a class subclass or extend another class. However, whereas a class can extend only one other class, an interface can extend any number of interfaces. The interface declaration includes a comma-separated list of all the interfaces that it extends.
-
-The interface body can contain abstract methods, default methods, and static methods. An abstract method within an interface is followed by a semicolon, but no braces (an abstract method does not contain an implementation). Default methods are defined with the default modifier, and static methods with the static keyword. All abstract, default, and static methods in an interface are implicitly public, so you can omit the public modifier.
-
-In addition, an interface can contain constant declarations. All constant values defined in an interface are implicitly public, static, and final. Once again, you can omit these modifiers.
-
-By convention, the implements clause follows the extends clause, if there is one.
-
-	public interface Relatable {
-	    public int isLargerThan(Relatable other);
-	}
-
-	public class RectanglePlus implements Relatable {
-		public int isLargerThan(Relatable other) {
-	        RectanglePlus otherRect = (RectanglePlus)other;
-	        if (this.getArea() < otherRect.getArea())
-	            return -1;
-	        else if (this.getArea() > otherRect.getArea())
-	            return 1;
-	        else
-	            return 0;               
-	    }
-	}
-
-The isLargerThan method, as defined in the Relatable interface, takes an object of type Relatable. The line of code, shown in bold in the previous example, casts other to a RectanglePlus instance. Type casting tells the compiler what the object really is. Invoking getArea directly on the other instance (other.getArea()) would fail to compile because the compiler does not understand that other is actually an instance of RectanglePlus.
-
-
-Using an Interface as a Type
-
-When you define a new interface, you are defining a new reference data type. You can use interface names anywhere you can use any other data type name. If you define a reference variable whose type is an interface, any object you assign to it must be an instance of a class that implements the interface.
-
-As an example, here is a method for finding the largest object in a pair of objects, for any objects that are instantiated from a class that implements Relatable:
-
-	public Object findLargest(Object object1, Object object2) {
-	   Relatable obj1 = (Relatable)object1;
-	   Relatable obj2 = (Relatable)object2;
-	   if ((obj1).isLargerThan(obj2) > 0)
-	      return object1;
-	   else 
-	      return object2;
-	}
-
-By casting object1 to a Relatable type, it can invoke the isLargerThan method. These methods work for any "relatable" objects, no matter what their class inheritance is. When they implement Relatable, they can be of both their own class (or superclass) type and a Relatable type. This gives them some of the advantages of multiple inheritance, where they can have behavior from both a superclass and an interface.
-
-Evolving Interfaces
-
-Consider an interface that you have developed called DoIt:
-
-	public interface DoIt {
-	   void doSomething(int i, double x);
-	   int doSomethingElse(String s);
-	}
-
-Suppose that, at a later time, you want to add a third method to DoIt, so that the interface now becomes:
-
-	public interface DoIt {
-
-	   void doSomething(int i, double x);
-	   int doSomethingElse(String s);
-	   boolean didItWork(int i, double x, String s);
-	   
-	}
-
-If you make this change, then all classes that implement the old DoIt interface will break because they no longer implement the old interface.
-
-If you want to add additional methods to an interface, you have several options. You could create a DoItPlus interface that extends DoIt:
-
-	public interface DoItPlus extends DoIt {
-
-	   boolean didItWork(int i, double x, String s);
-	   
-	}
-
-Now users of your code can choose to continue to use the old interface or to upgrade to the new interface.
-
-Alternatively, you can define your new methods as default methods. The following example defines a default method named didItWork:
-
-	public interface DoIt {
-
-	   void doSomething(int i, double x);
-	   int doSomethingElse(String s);
-	   default boolean didItWork(int i, double x, String s) {
-	       // Method body 
-	   }
-	   
-	}
-
-Note that you must provide an implementation for default methods. You could also define new static methods to existing interfaces. Users who have classes that implement interfaces enhanced with new default or static methods do not have to modify or recompile them to accommodate the additional methods.
-
-	public interface TimeClient {
-	    void setTime(int hour, int minute, int second);
-	    void setDate(int day, int month, int year);
-	    void setDateAndTime(int day, int month, int year,
-	                               int hour, int minute, int second);
-	    LocalDateTime getLocalDateTime();
-	    
-	    static ZoneId getZoneId (String zoneString) {
-	        try {
-	            return ZoneId.of(zoneString);
-	        } catch (DateTimeException e) {
-	            System.err.println("Invalid time zone: " + zoneString +
-	                "; using default time zone instead.");
-	            return ZoneId.systemDefault();
-	        }
-	    }
-	        
-	    default ZonedDateTime getZonedDateTime(String zoneString) {
-	        return ZonedDateTime.of(getLocalDateTime(), getZoneId(zoneString));
-	    }
-	}
-
-	public static void main(String... args) {
-        TimeClient myTimeClient = new SimpleTimeClient();
-        System.out.println("Current time: " + myTimeClient.toString());
-        System.out.println("Time in California: " + myTimeClient.getZonedDateTime("Blah blah").toString());
-    }
-
-Extending Interfaces That Contain Default Methods
-
-When you extend an interface that contains a default method, you can do the following:
-
-	1. Not mention the default method at all, which lets your extended interface inherit the default method.
-	2. Redeclare the default method, which makes it abstract.
-	3. Redefine the default method, which overrides it.
-
-Suppose that you extend the interface TimeClient as follows:
-
-	public interface AnotherTimeClient extends TimeClient { }
-
-Any class that implements the interface AnotherTimeClient will have the implementation specified by the default method TimeClient.getZonedDateTime.
-
-Suppose that you extend the interface TimeClient as follows:
-
-	public interface AbstractZoneTimeClient extends TimeClient {
-	    public ZonedDateTime getZonedDateTime(String zoneString);
-	}
-
-Any class that implements the interface AbstractZoneTimeClient will have to implement the method getZonedDateTime; this method is an abstract method like all other nondefault (and nonstatic) methods in an interface.
-
-Suppose that you extend the interface TimeClient as follows:
-
-	public interface HandleInvalidTimeZoneClient extends TimeClient {
-	    default public ZonedDateTime getZonedDateTime(String zoneString) {
-	        try {
-	            return ZonedDateTime.of(getLocalDateTime(),ZoneId.of(zoneString)); 
-	        } catch (DateTimeException e) {
-	            System.err.println("Invalid zone ID: " + zoneString +
-	                "; using the default time zone instead.");
-	            return ZonedDateTime.of(getLocalDateTime(),ZoneId.systemDefault());
-	        }
-	    }
-	}
-
-Any class that implements the interface HandleInvalidTimeZoneClient will use the implementation of getZonedDateTime specified by this interface instead of the one specified by the interface TimeClient.
-
-
-Static Methods
-
-This makes it easier for you to organize helper methods in your libraries; you can keep static methods specific to an interface in the same interface rather than in a separate class.
-
-Interface static method helps us in providing security by not allowing implementation classes to override them.
-
-
-
-Integrating Default Methods into Existing Libraries
-
-	Default methods enable you to add new functionality to existing interfaces and ensure binary compatibility with code written for older versions of those interfaces. In particular, default methods enable you to add methods that accept lambda expressions as parameters to existing interfaces. This section demonstrates how the Comparator interface has been enhanced with default and static methods.
-
-	Consider the Card and Deck classes as described in Questions and Exercises: Classes. This example rewrites the Card and Deck classes as interfaces. The Card interface contains two enum types (Suit and Rank) and two abstract methods (getSuit and getRank):
-
-		package defaultmethods;
-
-		public interface Card extends Comparable<Card> {
+		    // constant declarations
 		    
-		    public enum Suit { 
-		        DIAMONDS (1, "Diamonds"), 
-		        CLUBS    (2, "Clubs"   ), 
-		        HEARTS   (3, "Hearts"  ), 
-		        SPADES   (4, "Spades"  );
+		    // base of natural logarithms
+		    double E = 2.718282;
+		 
+		    // method signatures
+		    void doSomething (int i, double x);
+		    int doSomethingElse(String s);
+		}
+
+	An interface can extend other interfaces, just as a class subclass or extend another class. However, whereas a class can extend only one other class, an interface can extend any number of interfaces. The interface declaration includes a comma-separated list of all the interfaces that it extends.
+
+	The interface body can contain abstract methods, default methods, and static methods. An abstract method within an interface is followed by a semicolon, but no braces (an abstract method does not contain an implementation). Default methods are defined with the default modifier, and static methods with the static keyword. All abstract, default, and static methods in an interface are implicitly public, so you can omit the public modifier.
+
+	In addition, an interface can contain constant declarations. All constant values defined in an interface are implicitly public, static, and final. Once again, you can omit these modifiers.
+
+	By convention, the implements clause follows the extends clause, if there is one.
+
+		public interface Relatable {
+		    public int isLargerThan(Relatable other);
+		}
+
+		public class RectanglePlus implements Relatable {
+			public int isLargerThan(Relatable other) {
+		        RectanglePlus otherRect = (RectanglePlus)other;
+		        if (this.getArea() < otherRect.getArea())
+		            return -1;
+		        else if (this.getArea() > otherRect.getArea())
+		            return 1;
+		        else
+		            return 0;               
+		    }
+		}
+
+	The isLargerThan method, as defined in the Relatable interface, takes an object of type Relatable. The line of code, shown in bold in the previous example, casts other to a RectanglePlus instance. Type casting tells the compiler what the object really is. Invoking getArea directly on the other instance (other.getArea()) would fail to compile because the compiler does not understand that other is actually an instance of RectanglePlus.
+
+
+	Using an Interface as a Type
+
+	When you define a new interface, you are defining a new reference data type. You can use interface names anywhere you can use any other data type name. If you define a reference variable whose type is an interface, any object you assign to it must be an instance of a class that implements the interface.
+
+	As an example, here is a method for finding the largest object in a pair of objects, for any objects that are instantiated from a class that implements Relatable:
+
+		public Object findLargest(Object object1, Object object2) {
+		   Relatable obj1 = (Relatable)object1;
+		   Relatable obj2 = (Relatable)object2;
+		   if ((obj1).isLargerThan(obj2) > 0)
+		      return object1;
+		   else 
+		      return object2;
+		}
+
+	By casting object1 to a Relatable type, it can invoke the isLargerThan method. These methods work for any "relatable" objects, no matter what their class inheritance is. When they implement Relatable, they can be of both their own class (or superclass) type and a Relatable type. This gives them some of the advantages of multiple inheritance, where they can have behavior from both a superclass and an interface.
+
+	Evolving Interfaces
+
+	Consider an interface that you have developed called DoIt:
+
+		public interface DoIt {
+		   void doSomething(int i, double x);
+		   int doSomethingElse(String s);
+		}
+
+	Suppose that, at a later time, you want to add a third method to DoIt, so that the interface now becomes:
+
+		public interface DoIt {
+
+		   void doSomething(int i, double x);
+		   int doSomethingElse(String s);
+		   boolean didItWork(int i, double x, String s);
+		   
+		}
+
+	If you make this change, then all classes that implement the old DoIt interface will break because they no longer implement the old interface.
+
+	If you want to add additional methods to an interface, you have several options. You could create a DoItPlus interface that extends DoIt:
+
+		public interface DoItPlus extends DoIt {
+
+		   boolean didItWork(int i, double x, String s);
+		   
+		}
+
+	Now users of your code can choose to continue to use the old interface or to upgrade to the new interface.
+
+	Alternatively, you can define your new methods as default methods. The following example defines a default method named didItWork:
+
+		public interface DoIt {
+
+		   void doSomething(int i, double x);
+		   int doSomethingElse(String s);
+		   default boolean didItWork(int i, double x, String s) {
+		       // Method body 
+		   }
+		   
+		}
+
+	Note that you must provide an implementation for default methods. You could also define new static methods to existing interfaces. Users who have classes that implement interfaces enhanced with new default or static methods do not have to modify or recompile them to accommodate the additional methods.
+
+		public interface TimeClient {
+		    void setTime(int hour, int minute, int second);
+		    void setDate(int day, int month, int year);
+		    void setDateAndTime(int day, int month, int year,
+		                               int hour, int minute, int second);
+		    LocalDateTime getLocalDateTime();
+		    
+		    static ZoneId getZoneId (String zoneString) {
+		        try {
+		            return ZoneId.of(zoneString);
+		        } catch (DateTimeException e) {
+		            System.err.println("Invalid time zone: " + zoneString +
+		                "; using default time zone instead.");
+		            return ZoneId.systemDefault();
+		        }
+		    }
 		        
-		        private final int value;
-		        private final String text;
-		        Suit(int value, String text) {
-		            this.value = value;
-		            this.text = text;
+		    default ZonedDateTime getZonedDateTime(String zoneString) {
+		        return ZonedDateTime.of(getLocalDateTime(), getZoneId(zoneString));
+		    }
+		}
+
+		public static void main(String... args) {
+	        TimeClient myTimeClient = new SimpleTimeClient();
+	        System.out.println("Current time: " + myTimeClient.toString());
+	        System.out.println("Time in California: " + myTimeClient.getZonedDateTime("Blah blah").toString());
+	    }
+
+	Extending Interfaces That Contain Default Methods
+
+	When you extend an interface that contains a default method, you can do the following:
+
+		1. Not mention the default method at all, which lets your extended interface inherit the default method.
+		2. Redeclare the default method, which makes it abstract.
+		3. Redefine the default method, which overrides it.
+
+	Suppose that you extend the interface TimeClient as follows:
+
+		public interface AnotherTimeClient extends TimeClient { }
+
+	Any class that implements the interface AnotherTimeClient will have the implementation specified by the default method TimeClient.getZonedDateTime.
+
+	Suppose that you extend the interface TimeClient as follows:
+
+		public interface AbstractZoneTimeClient extends TimeClient {
+		    public ZonedDateTime getZonedDateTime(String zoneString);
+		}
+
+	Any class that implements the interface AbstractZoneTimeClient will have to implement the method getZonedDateTime; this method is an abstract method like all other nondefault (and nonstatic) methods in an interface.
+
+	Suppose that you extend the interface TimeClient as follows:
+
+		public interface HandleInvalidTimeZoneClient extends TimeClient {
+		    default public ZonedDateTime getZonedDateTime(String zoneString) {
+		        try {
+		            return ZonedDateTime.of(getLocalDateTime(),ZoneId.of(zoneString)); 
+		        } catch (DateTimeException e) {
+		            System.err.println("Invalid zone ID: " + zoneString +
+		                "; using the default time zone instead.");
+		            return ZonedDateTime.of(getLocalDateTime(),ZoneId.systemDefault());
 		        }
-		        public int value() {return value;}
-		        public String text() {return text;}
-		    }
-		    
-		    public enum Rank { 
-		        DEUCE  (2 , "Two"  ),
-		        THREE  (3 , "Three"), 
-		        FOUR   (4 , "Four" ), 
-		        FIVE   (5 , "Five" ), 
-		        SIX    (6 , "Six"  ), 
-		        SEVEN  (7 , "Seven"),
-		        EIGHT  (8 , "Eight"), 
-		        NINE   (9 , "Nine" ), 
-		        TEN    (10, "Ten"  ), 
-		        JACK   (11, "Jack" ),
-		        QUEEN  (12, "Queen"), 
-		        KING   (13, "King" ),
-		        ACE    (14, "Ace"  );
-		        private final int value;
-		        private final String text;
-		        Rank(int value, String text) {
-		            this.value = value;
-		            this.text = text;
-		        }
-		        public int value() {return value;}
-		        public String text() {return text;}
-		    }
-		    
-		    public Card.Suit getSuit();
-		    public Card.Rank getRank();
-		}
-
-	The Deck interface contains various methods that manipulate cards in a deck:
-
-		package defaultmethods; 
-		 
-		import java.util.*;
-		import java.util.stream.*;
-		import java.lang.*;
-		 
-		public interface Deck {
-		    
-		    List<Card> getCards();
-		    Deck deckFactory();
-		    int size();
-		    void addCard(Card card);
-		    void addCards(List<Card> cards);
-		    void addDeck(Deck deck);
-		    void shuffle();
-		    void sort();
-		    void sort(Comparator<Card> c);
-		    String deckToString();
-
-		    Map<Integer, Deck> deal(int players, int numberOfCards)
-		        throws IllegalArgumentException;
-
-		}
-
-	The class PlayingCard implements the interface Card, and the class StandardDeck implements the interface Deck.
-
-	The class StandardDeck implements the abstract method Deck.sort as follows:
-
-		public class StandardDeck implements Deck {
-		    
-		    private List<Card> entireDeck;
-		    
-		    // ...
-		    
-		    public void sort() {
-		        Collections.sort(entireDeck);
-		    }
-		    
-		    // ...
-		}
-
-	The method Collections.sort sorts an instance of List whose element type implements the interface Comparable. The member entireDeck is an instance of List whose elements are of the type Card, which extends Comparable. The class PlayingCard implements the Comparable.compareTo method as follows:
-
-		public int hashCode() {
-		    return ((suit.value()-1)*13)+rank.value();
-		}
-
-		public int compareTo(Card o) {
-		    return this.hashCode() - o.hashCode();
-		}
-
-	The method compareTo causes the method StandardDeck.sort() to sort the deck of cards first by suit, and then by rank.
-
-	What if you want to sort the deck first by rank, then by suit? You would need to implement the Comparator interface to specify new sorting criteria, and use the method sort(List<T> list, Comparator<? super T> c) (the version of the sort method that includes a Comparator parameter). You can define the following method in the class StandardDeck:
-
-		public void sort(Comparator<Card> c) {
-		    Collections.sort(entireDeck, c);
-		}
-
-	With this method, you can specify how the method Collections.sort sorts instances of the Card class. One way to do this is to implement the Comparator interface to specify how you want the cards sorted. The example SortByRankThenSuit does this:
-
-		package defaultmethods;
-
-		import java.util.*;
-		import java.util.stream.*;
-		import java.lang.*;
-
-		public class SortByRankThenSuit implements Comparator<Card> {
-		    public int compare(Card firstCard, Card secondCard) {
-		        int compVal =
-		            firstCard.getRank().value() - secondCard.getRank().value();
-		        if (compVal != 0)
-		            return compVal;
-		        else
-		            return firstCard.getSuit().value() - secondCard.getSuit().value(); 
 		    }
 		}
 
-	The following invocation sorts the deck of playing cards first by rank, then by suit:
+	Any class that implements the interface HandleInvalidTimeZoneClient will use the implementation of getZonedDateTime specified by this interface instead of the one specified by the interface TimeClient.
 
-		StandardDeck myDeck = new StandardDeck();
-		myDeck.shuffle();
-		myDeck.sort(new SortByRankThenSuit());
 
-	However, this approach is too verbose; it would be better if you could specify what you want to sort, not how you want to sort. Suppose that you are the developer who wrote the Comparator interface. What default or static methods could you add to the Comparator interface to enable other developers to more easily specify sort criteria?
+	Static Methods
 
-	To start, suppose that you want to sort the deck of playing cards by rank, regardless of suit. You can invoke the StandardDeck.sort method as follows:
+	This makes it easier for you to organize helper methods in your libraries; you can keep static methods specific to an interface in the same interface rather than in a separate class.
 
-		StandardDeck myDeck = new StandardDeck();
-		myDeck.shuffle();
-		myDeck.sort(
-		    (firstCard, secondCard) ->
-		        firstCard.getRank().value() - secondCard.getRank().value()
-		); 
+	Interface static method helps us in providing security by not allowing implementation classes to override them.
 
-	Because the interface Comparator is a functional interface, you can use a lambda expression as an argument for the sort method. In this example, the lambda expression compares two integer values.
 
-	It would be simpler for your developers if they could create a Comparator instance by invoking the method Card.getRank only. In particular, it would be helpful if your developers could create a Comparator instance that compares any object that can return a numerical value from a method such as getValue or hashCode. The Comparator interface has been enhanced with this ability with the static method comparing:
 
-		myDeck.sort(Comparator.comparing((card) -> card.getRank()));  
+	Integrating Default Methods into Existing Libraries
 
-	In this example, you can use a method reference instead:
+		Default methods enable you to add new functionality to existing interfaces and ensure binary compatibility with code written for older versions of those interfaces. In particular, default methods enable you to add methods that accept lambda expressions as parameters to existing interfaces. This section demonstrates how the Comparator interface has been enhanced with default and static methods.
 
-		myDeck.sort(Comparator.comparing(Card::getRank));  
+		Consider the Card and Deck classes as described in Questions and Exercises: Classes. This example rewrites the Card and Deck classes as interfaces. The Card interface contains two enum types (Suit and Rank) and two abstract methods (getSuit and getRank):
 
-	This invocation better demonstrates what to sort rather than how to do it.
+			package defaultmethods;
 
-	The Comparator interface has been enhanced with other versions of the static method comparing such as comparingDouble and comparingLong that enable you to create Comparator instances that compare other data types.
+			public interface Card extends Comparable<Card> {
+			    
+			    public enum Suit { 
+			        DIAMONDS (1, "Diamonds"), 
+			        CLUBS    (2, "Clubs"   ), 
+			        HEARTS   (3, "Hearts"  ), 
+			        SPADES   (4, "Spades"  );
+			        
+			        private final int value;
+			        private final String text;
+			        Suit(int value, String text) {
+			            this.value = value;
+			            this.text = text;
+			        }
+			        public int value() {return value;}
+			        public String text() {return text;}
+			    }
+			    
+			    public enum Rank { 
+			        DEUCE  (2 , "Two"  ),
+			        THREE  (3 , "Three"), 
+			        FOUR   (4 , "Four" ), 
+			        FIVE   (5 , "Five" ), 
+			        SIX    (6 , "Six"  ), 
+			        SEVEN  (7 , "Seven"),
+			        EIGHT  (8 , "Eight"), 
+			        NINE   (9 , "Nine" ), 
+			        TEN    (10, "Ten"  ), 
+			        JACK   (11, "Jack" ),
+			        QUEEN  (12, "Queen"), 
+			        KING   (13, "King" ),
+			        ACE    (14, "Ace"  );
+			        private final int value;
+			        private final String text;
+			        Rank(int value, String text) {
+			            this.value = value;
+			            this.text = text;
+			        }
+			        public int value() {return value;}
+			        public String text() {return text;}
+			    }
+			    
+			    public Card.Suit getSuit();
+			    public Card.Rank getRank();
+			}
 
-	Suppose that your developers would like to create a Comparator instance that could compare objects with more than one criteria. For example, how would you sort the deck of playing cards first by rank, and then by suit? As before, you could use a lambda expression to specify these sort criteria:
+		The Deck interface contains various methods that manipulate cards in a deck:
 
-		StandardDeck myDeck = new StandardDeck();
-		myDeck.shuffle();
-		myDeck.sort(
-		    (firstCard, secondCard) -> {
-		        int compare =
-		            firstCard.getRank().value() - secondCard.getRank().value();
-		        if (compare != 0)
-		            return compare;
-		        else
-		            return firstCard.getSuit().value() - secondCard.getSuit().value();
-		    }      
-		); 
+			package defaultmethods; 
+			 
+			import java.util.*;
+			import java.util.stream.*;
+			import java.lang.*;
+			 
+			public interface Deck {
+			    
+			    List<Card> getCards();
+			    Deck deckFactory();
+			    int size();
+			    void addCard(Card card);
+			    void addCards(List<Card> cards);
+			    void addDeck(Deck deck);
+			    void shuffle();
+			    void sort();
+			    void sort(Comparator<Card> c);
+			    String deckToString();
 
-	It would be simpler for your developers if they could build a Comparator instance from a series of Comparator instances. The Comparator interface has been enhanced with this ability with the default method thenComparing:
+			    Map<Integer, Deck> deal(int players, int numberOfCards)
+			        throws IllegalArgumentException;
 
-		myDeck.sort(
-		    Comparator
-		        .comparing(Card::getRank)
-		        .thenComparing(Comparator.comparing(Card::getSuit)));
+			}
 
-	The Comparator interface has been enhanced with other versions of the default method thenComparing (such as thenComparingDouble and thenComparingLong) that enable you to build Comparator instances that compare other data types.
+		The class PlayingCard implements the interface Card, and the class StandardDeck implements the interface Deck.
 
-	Suppose that your developers would like to create a Comparator instance that enables them to sort a collection of objects in reverse order. For example, how would you sort the deck of playing cards first by descending order of rank, from Ace to Two (instead of from Two to Ace)? As before, you could specify another lambda expression. However, it would be simpler for your developers if they could reverse an existing Comparator by invoking a method. The Comparator interface has been enhanced with this ability with the default method reversed:
+		The class StandardDeck implements the abstract method Deck.sort as follows:
 
-		myDeck.sort(
-		    Comparator.comparing(Card::getRank)
-		        .reversed()
-		        .thenComparing(Comparator.comparing(Card::getSuit)));
+			public class StandardDeck implements Deck {
+			    
+			    private List<Card> entireDeck;
+			    
+			    // ...
+			    
+			    public void sort() {
+			        Collections.sort(entireDeck);
+			    }
+			    
+			    // ...
+			}
 
-	This example demonstrates how the Comparator interface has been enhanced with default methods, static methods, lambda expressions, and method references to create more expressive library methods whose functionality programmers can quickly deduce by looking at how they are invoked. Use these constructs to enhance the interfaces in your libraries.
+		The method Collections.sort sorts an instance of List whose element type implements the interface Comparable. The member entireDeck is an instance of List whose elements are of the type Card, which extends Comparable. The class PlayingCard implements the Comparable.compareTo method as follows:
+
+			public int hashCode() {
+			    return ((suit.value()-1)*13)+rank.value();
+			}
+
+			public int compareTo(Card o) {
+			    return this.hashCode() - o.hashCode();
+			}
+
+		The method compareTo causes the method StandardDeck.sort() to sort the deck of cards first by suit, and then by rank.
+
+		What if you want to sort the deck first by rank, then by suit? You would need to implement the Comparator interface to specify new sorting criteria, and use the method sort(List<T> list, Comparator<? super T> c) (the version of the sort method that includes a Comparator parameter). You can define the following method in the class StandardDeck:
+
+			public void sort(Comparator<Card> c) {
+			    Collections.sort(entireDeck, c);
+			}
+
+		With this method, you can specify how the method Collections.sort sorts instances of the Card class. One way to do this is to implement the Comparator interface to specify how you want the cards sorted. The example SortByRankThenSuit does this:
+
+			package defaultmethods;
+
+			import java.util.*;
+			import java.util.stream.*;
+			import java.lang.*;
+
+			public class SortByRankThenSuit implements Comparator<Card> {
+			    public int compare(Card firstCard, Card secondCard) {
+			        int compVal =
+			            firstCard.getRank().value() - secondCard.getRank().value();
+			        if (compVal != 0)
+			            return compVal;
+			        else
+			            return firstCard.getSuit().value() - secondCard.getSuit().value(); 
+			    }
+			}
+
+		The following invocation sorts the deck of playing cards first by rank, then by suit:
+
+			StandardDeck myDeck = new StandardDeck();
+			myDeck.shuffle();
+			myDeck.sort(new SortByRankThenSuit());
+
+		However, this approach is too verbose; it would be better if you could specify what you want to sort, not how you want to sort. Suppose that you are the developer who wrote the Comparator interface. What default or static methods could you add to the Comparator interface to enable other developers to more easily specify sort criteria?
+
+		To start, suppose that you want to sort the deck of playing cards by rank, regardless of suit. You can invoke the StandardDeck.sort method as follows:
+
+			StandardDeck myDeck = new StandardDeck();
+			myDeck.shuffle();
+			myDeck.sort(
+			    (firstCard, secondCard) ->
+			        firstCard.getRank().value() - secondCard.getRank().value()
+			); 
+
+		Because the interface Comparator is a functional interface, you can use a lambda expression as an argument for the sort method. In this example, the lambda expression compares two integer values.
+
+		It would be simpler for your developers if they could create a Comparator instance by invoking the method Card.getRank only. In particular, it would be helpful if your developers could create a Comparator instance that compares any object that can return a numerical value from a method such as getValue or hashCode. The Comparator interface has been enhanced with this ability with the static method comparing:
+
+			myDeck.sort(Comparator.comparing((card) -> card.getRank()));  
+
+		In this example, you can use a method reference instead:
+
+			myDeck.sort(Comparator.comparing(Card::getRank));  
+
+		This invocation better demonstrates what to sort rather than how to do it.
+
+		The Comparator interface has been enhanced with other versions of the static method comparing such as comparingDouble and comparingLong that enable you to create Comparator instances that compare other data types.
+
+		Suppose that your developers would like to create a Comparator instance that could compare objects with more than one criteria. For example, how would you sort the deck of playing cards first by rank, and then by suit? As before, you could use a lambda expression to specify these sort criteria:
+
+			StandardDeck myDeck = new StandardDeck();
+			myDeck.shuffle();
+			myDeck.sort(
+			    (firstCard, secondCard) -> {
+			        int compare =
+			            firstCard.getRank().value() - secondCard.getRank().value();
+			        if (compare != 0)
+			            return compare;
+			        else
+			            return firstCard.getSuit().value() - secondCard.getSuit().value();
+			    }      
+			); 
+
+		It would be simpler for your developers if they could build a Comparator instance from a series of Comparator instances. The Comparator interface has been enhanced with this ability with the default method thenComparing:
+
+			myDeck.sort(
+			    Comparator
+			        .comparing(Card::getRank)
+			        .thenComparing(Comparator.comparing(Card::getSuit)));
+
+		The Comparator interface has been enhanced with other versions of the default method thenComparing (such as thenComparingDouble and thenComparingLong) that enable you to build Comparator instances that compare other data types.
+
+		Suppose that your developers would like to create a Comparator instance that enables them to sort a collection of objects in reverse order. For example, how would you sort the deck of playing cards first by descending order of rank, from Ace to Two (instead of from Two to Ace)? As before, you could specify another lambda expression. However, it would be simpler for your developers if they could reverse an existing Comparator by invoking a method. The Comparator interface has been enhanced with this ability with the default method reversed:
+
+			myDeck.sort(
+			    Comparator.comparing(Card::getRank)
+			        .reversed()
+			        .thenComparing(Comparator.comparing(Card::getSuit)));
+
+		This example demonstrates how the Comparator interface has been enhanced with default methods, static methods, lambda expressions, and method references to create more expressive library methods whose functionality programmers can quickly deduce by looking at how they are invoked. Use these constructs to enhance the interfaces in your libraries.
+
+
+32) Inheritance
+
+	you can reuse the fields and methods of the existing class without having to write them yourself.
+
+	A subclass inherits all of the public and protected members of its parent, no matter what package the subclass is in.
+
+	You can write a new instance method in the subclass that has the same signature as the one in the superclass, thus overriding it.
+
+	A subclass does not inherit the private members of its parent class. However, if the superclass has public or protected methods for accessing its private fields, these can also be used by the subclass.
+
+	A nested class has access to all the private members of its enclosing class—both fields and methods. Therefore, a public or protected nested class inherited by a subclass has indirect access to all of the private members of the superclass.
+
+	Casting shows the use of an object of one type in place of another type, among the objects permitted by inheritance and implementations. For example, if we write
+
+		Object obj = new MountainBike();
+
+	then obj is both an Object and a MountainBike (until such time as obj is assigned another object that is not a MountainBike). This is called implicit casting.
+
+	If, on the other hand, we write
+
+		MountainBike myBike = obj;
+
+	we would get a compile-time error because obj is not known to the compiler to be a MountainBike. However, we can tell the compiler that we promise to assign a MountainBike to obj by explicit casting:
+
+		MountainBike myBike = (MountainBike)obj;
+
+	You can make a logical test as to the type of a particular object using the instanceof operator. This can save you from a runtime error owing to an improper cast. For example:
+		if (obj instanceof MountainBike) {
+		    MountainBike myBike = (MountainBike)obj;
+		}
+
+
+	Instance Methods
+
+		An instance method in a subclass with the same signature (name, plus the number and the type of its parameters) and return type as an instance method in the superclass overrides the superclass's method.
+
+		When overriding a method, you might want to use the @Override annotation that instructs the compiler that you intend to override a method in the superclass. If, for some reason, the compiler detects that the method does not exist in one of the superclasses, then it will generate an error. 
+
+	Static Methods
+
+		If a subclass defines a static method with the same signature as a static method in the superclass, then the method in the subclass hides the one in the superclass.
+
+	Interface Methods
+
+		Default methods and abstract methods in interfaces are inherited like instance methods. However, when the supertypes of a class or interface provide multiple default methods with the same signature, the Java compiler follows inheritance rules to resolve the name conflict.
+
+		1. Instance methods are preferred over interface default methods.
+		2. Methods that are already overridden by other candidates are ignored. This circumstance can arise when supertypes share a common ancestor.
+
+		If two or more independently defined default methods conflict, or a default method conflicts with an abstract method, then the Java compiler produces a compiler error. You must explicitly override the supertype methods.
+
+			public interface OperateCar {
+			    default public int startEngine(EncryptedKey key) {
+			        // Implementation
+			    }
+			}
+			public interface FlyCar {
+			    default public int startEngine(EncryptedKey key) {
+			        // Implementation
+			    }
+			}
+
+		A class that implements both OperateCar and FlyCar must override the method startEngine. You could invoke any of the of the default implementations with the super keyword.
+
+			public class FlyingCar implements OperateCar, FlyCar {
+			    public int startEngine(EncryptedKey key) {
+			        FlyCar.super.startEngine(key);
+			        OperateCar.super.startEngine(key);
+			    }
+			}
+
+		The name preceding super (in this example, FlyCar or OperateCar) must refer to a direct superinterface that defines or inherits a default for the invoked method. This form of method invocation is not restricted to differentiating between multiple implemented interfaces that contain default methods with the same signature. You can use the super keyword to invoke a default method in both classes and interfaces.
+
+		Inherited instance methods from classes can override abstract interface methods. Consider the following interfaces and classes:
+
+			public interface Mammal {
+			    String identifyMyself();
+			}
+			public class Horse {
+			    public String identifyMyself() {
+			        return "I am a horse.";
+			    }
+			}
+			public class Mustang extends Horse implements Mammal {
+			    public static void main(String... args) {
+			        Mustang myApp = new Mustang();
+			        System.out.println(myApp.identifyMyself());
+			    }
+			}
+
+		The method Mustang.identifyMyself returns the string I am a horse. The class Mustang inherits the method identifyMyself from the class Horse, which overrides the abstract method of the same name in the interface Mammal.
+
+		Note: Static methods in interfaces are never inherited.
+
+	Modifiers
+
+		The access specifier for an overriding method can allow more, but not less, access than the overridden method. For example, a protected instance method in the superclass can be made public, but not private, in the subclass.
+
+		You will get a compile-time error if you attempt to change an instance method in the superclass to a static method in the subclass, and vice versa.
+
+	Polymorphism
+
+		Subclasses of a class can define their own unique behaviors and yet share some of the same functionality of the parent class.
+
+			public static void main(String[] args){
+			    Bicycle bike01, bike02, bike03;
+
+			    bike01 = new Bicycle(20, 10, 1);
+			    bike02 = new MountainBike(20, 10, 5, "Dual");
+			    bike03 = new RoadBike(40, 20, 8, 23);
+
+			    bike01.printDescription();
+			    bike02.printDescription();
+			    bike03.printDescription();
+			}
+		The Java virtual machine (JVM) calls the appropriate method for the object that is referred to in each variable. It does not call the method that is defined by the variable's type. 
+
+	Hiding Fields
+
+		Within a class, a field that has the same name as a field in the superclass hides the superclass's field, even if their types are different. Within the subclass, the field in the superclass cannot be referenced by its simple name. Instead, the field must be accessed through super.
+
+	Super
+
+		Accessing Superclass Members
+			
+			public class Superclass {
+			    public void printMethod() {
+			        System.out.println("Printed in Superclass.");
+			    }
+			}
+
+			public class Subclass extends Superclass {
+
+			    // overrides printMethod in Superclass
+			    public void printMethod() {
+			        super.printMethod();
+			        System.out.println("Printed in Subclass");
+			    }
+			    public static void main(String[] args) {
+			        Subclass s = new Subclass();
+			        s.printMethod();    
+			    }
+			}
+
+		Subclass Constructors
+
+			public MountainBike(int startHeight, int startCadence,
+			                    int startSpeed, int startGear) {
+			    super(startCadence, startSpeed, startGear);
+			    seatHeight = startHeight;
+			}   
+
+		Note: If a constructor does not explicitly invoke a superclass constructor, the Java compiler automatically inserts a call to the no-argument constructor of the superclass. If the super class does not have a no-argument constructor, you will get a compile-time error. Object does have such a constructor, so if Object is the only superclass, there is no problem.
+
+
+	The methods inherited from Object that are discussed in this section are:
+
+		protected Object clone() throws CloneNotSupportedException
+		      Creates and returns a copy of this object.
+		
+		public boolean equals(Object obj)
+		      Indicates whether some other object is "equal to" this one.
+		
+		protected void finalize() throws Throwable
+		      Called by the garbage collector on an object when garbage
+		      collection determines that there are no more references to the object
+		
+		public final Class getClass()
+		      Returns the runtime class of an object.
+		
+		public int hashCode()
+		      Returns a hash code value for the object.
+		
+		public String toString()
+		      Returns a string representation of the object.
+
+		By definition, if two objects are equal, their hash code must also be equal. If you override the equals() method, you change the way two objects are equated and Object's implementation of hashCode() is no longer valid. Therefore, if you override the equals() method, you must also override the hashCode() method as well.
+
+	Writing Final Classes and Methods
+
+		You use the final keyword in a method declaration to indicate that the method cannot be overridden by subclasses. 
+
+		Methods called from constructors should generally be declared final. If a constructor calls a non-final method, a subclass may redefine that method with surprising or undesirable results.
+
+		Note that you can also declare an entire class final. A class that is declared final cannot be subclassed. This is particularly useful, for example, when creating an immutable class like the String class.
+
+
+	Abstract Methods and Classes
+
+		An abstract class is a class that is declared abstract—it may or may not include abstract methods. Abstract classes cannot be instantiated, but they can be subclassed.
+
+		An abstract method is a method that is declared without an implementation (without braces, and followed by a semicolon), like this:
+
+			abstract void moveTo(double deltaX, double deltaY);
+
+		If a class includes abstract methods, then the class itself must be declared abstract, as in:
+
+			public abstract class GraphicObject {
+			   // declare fields
+			   // declare nonabstract methods
+			   abstract void draw();
+			}
+
+	Abstract Classes Compared to Interfaces
+
+		Abstract classes are similar to interfaces. You cannot instantiate them, and they may contain a mix of methods declared with or without an implementation. However, with abstract classes, you can declare fields that are not static and final, and define public, protected, and private concrete methods. With interfaces, all fields are automatically public, static, and final, and all methods that you declare or define (as default methods) are public. In addition, you can extend only one class, whether or not it is abstract, whereas you can implement any number of interfaces.
+
+		Which should you use, abstract classes or interfaces?
+
+			Consider using abstract classes if any of these statements apply to your situation:
+				1. You want to share code among several closely related classes.
+				2. You expect that classes that extend your abstract class have many common methods or fields, or require access modifiers other than public (such as protected and private).
+				3. You want to declare non-static or non-final fields. This enables you to define methods that can access and modify the state of the object to which they belong.
+			
+			Consider using interfaces if any of these statements apply to your situation:
+				1. You expect that unrelated classes would implement your interface. For example, the interfaces Comparable and Cloneable are implemented by many unrelated classes.
+				2. You want to specify the behavior of a particular data type, but not concerned about who implements its behavior.
+				3. You want to take advantage of multiple inheritance of type.
+
+
+		When an Abstract Class Implements an Interface
+
+			In the section on Interfaces, it was noted that a class that implements an interface must implement all of the interface's methods. It is possible, however, to define a class that does not implement all of the interface's methods, provided that the class is declared to be abstract. 
