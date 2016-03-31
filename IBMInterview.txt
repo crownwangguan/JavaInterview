@@ -1475,3 +1475,104 @@ Reference to a Constructor:
 		When an Abstract Class Implements an Interface
 
 			In the section on Interfaces, it was noted that a class that implements an interface must implement all of the interface's methods. It is possible, however, to define a class that does not implement all of the interface's methods, provided that the class is declared to be abstract. 
+
+33) Numbers
+
+	There are three reasons that you might use a Number object rather than a primitive:
+
+		1. As an argument of a method that expects an object (often used when manipulating collections of numbers).
+		2. To use constants defined by the class, such as MIN_VALUE and MAX_VALUE, that provide the upper and lower bounds of the data type.
+		3. To use class methods for converting values to and from other primitive types, for converting to and from strings, and for converting between number systems (decimal, octal, hexadecimal, binary).
+
+
+	Some methods in Integer class:
+		
+		int parseInt(String s) : return an integer
+		String toString() : return a String representing the value
+		Integer valueOf(int i) : return an Integer object holding the value
+		Integer valueOf(String s) : return an Integer object holding the value
+
+	Format
+
+		long n = 461012;
+		System.out.format("%d%n", n);      //  -->  "461012"
+		System.out.format("%08d%n", n);    //  -->  "00461012"
+		System.out.format("%+8d%n", n);    //  -->  " +461012"
+		System.out.format("%,8d%n", n);    // -->  " 461,012"
+		System.out.format("%+,8d%n%n", n); //  -->  "+461,012"
+
+		double pi = Math.PI;
+
+		System.out.format("%f%n", pi);       // -->  "3.141593"
+		System.out.format("%.3f%n", pi);     // -->  "3.142"
+		System.out.format("%10.3f%n", pi);   // -->  "     3.142"
+		System.out.format("%-10.3f%n", pi);  // -->  "3.142"
+		System.out.format(Locale.FRANCE, "%-10.4f%n%n", pi); // -->  "3,1416"
+
+		DecimalFormat offers a great deal of flexibility in the formatting of numbers, but it can make your code more complex.
+
+			static public void customFormat(String pattern, double value ) {
+				DecimalFormat myFormatter = new DecimalFormat(pattern);
+				String output = myFormatter.format(value);
+				System.out.println(value + "  " + pattern + "  " + output);
+			}
+
+			static public void main(String[] args) {
+				customFormat("###,###.###", 123456.789);
+				customFormat("###.##", 123456.789);
+				customFormat("000000.000", 123.78);
+				customFormat("$###,###.###", 12345.67);  
+			}
+
+	Random Numbers
+		The range includes 0.0 but not 1.0. 
+			int number = (int)(Math.random() * 10);
+
+34) Character and String
+	If you are using a single character value, you will use the primitive char type
+		char ch = 'a'; 
+	When you need to use a char as an object—for example, as a method argument where an object is expected. The Java programming language provides a wrapper class that "wraps" the char in a Character object for this purpose.
+		Character ch = new Character('a');
+
+	Create a String
+
+		String greeting = "Hello world!";
+
+			"Hello world!" is a string literal—a series of characters in your code that is enclosed in double quotes. Whenever it encounters a string literal in your code, the compiler creates a String object with its value
+
+		As with any other object, you can create String objects by using the new keyword and a constructor.
+
+			char[] helloArray = { 'h', 'e', 'l', 'l', 'o', '.' };
+			String helloString = new String(helloArray);
+
+
+	Concatenating String
+
+		The String class includes a method for concatenating two strings:
+			
+			string1.concat(string2); 
+
+	Convert:
+		String -> Integer : Integer.valueOf(String s)
+		Integer -> String : Integer.toString(int i) | String.valueOf(int i)
+
+
+	split:
+		String[] split(String regex)
+		Stirng[] split(String regex, int limit)
+
+	trim:
+		Returns a copy of this string with leading and trailing white space removed.
+			String trim()
+
+
+	StringBuilder:
+
+	StringBuilder objects are like String objects, except that they can be modified. Internally, these objects are treated like variable-length arrays that contain a sequence of characters. 
+
+		// creates empty builder, capacity 16
+		StringBuilder sb = new StringBuilder();
+
+	Autoboxing and Unboxing
+	
+		Autoboxing is the automatic conversion that the Java compiler makes between the primitive types and their corresponding object wrapper classes. For example, converting an int to an Integer, a double to a Double
